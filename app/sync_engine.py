@@ -131,7 +131,7 @@ class SyncEngine:
         synced = {str(row[3]) for row in self.db.get_all_by_source("zectrix")}
 
         for t in z_items:
-            existing = self.db.get_by_dest_id(str(t["id"]))
+            existing = self.db.get_by_source_id("zectrix", str(t["id"]))
             if not existing:
                 if not self.dry_run:
                     created = self.apple.create_reminder(
@@ -146,14 +146,13 @@ class SyncEngine:
 
         # Zectrix items that no longer exist → delete from Apple
         for row in self.db.get_all_by_source("zectrix"):
-            dest_id = row[3]
-            if dest_id not in z_ids:
-                source_id = row[2]
+            source_id = row[2]  # Zectrix todo ID
+            if source_id not in z_ids:
                 if not self.dry_run:
                     try:
-                        self.apple.delete_reminder(source_id)
-                        self.db.delete_by_dest(dest_id)
-                        logger.info("Deleted from Apple (zectrix gone): apple_id=%s", source_id)
+                        self.apple.delete_reminder(row[3])  # row[3]=Apple UUID
+                        self.db.delete_by_source("zectrix", source_id)
+                        logger.info("Deleted from Apple (zectrix gone): apple_id=%s", row[3])
                     except Exception as e:
                         logger.error("Failed to delete apple_id=%s: %s", source_id, e)
                 else:
