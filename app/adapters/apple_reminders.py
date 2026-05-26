@@ -1,5 +1,5 @@
 """Apple Reminders adapter using osascript."""
-import json
+from __future__ import annotations
 import logging
 import subprocess
 import time

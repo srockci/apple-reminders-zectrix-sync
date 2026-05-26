@@ -1,6 +1,8 @@
 """Configuration loader for apple-reminders-zectrix-sync."""
+from __future__ import annotations
 import logging
 from pathlib import Path
+from typing import Optional, Union
 
 import yaml
 
@@ -8,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 
 class Config:
-    def __init__(self, config_path: str | Path | None = None,
-                 zectrix_api_key: str | None = None,
-                 zectrix_device_id: str | None = None,
+    def __init__(self, config_path: Optional[Union[str, Path]] = None,
+                 zectrix_api_key: Optional[str] = None,
+                 zectrix_device_id: Optional[str] = None,
                  poll_interval: int = 300,
                  db_path: str = "/data/sync.db",
                  zectrix_base_url: str = "https://cloud.zectrix.com"):
