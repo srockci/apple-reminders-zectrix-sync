@@ -17,7 +17,7 @@ WEB_PATH = str(Path(__file__).parent / "web")
 
 def main():
     eel.init(WEB_PATH)
-    eel.start("index.html", size=(480, 700), resizable=False, close_callback=lambda x: None)
+    eel.start("index.html", size=(480, 700), close_callback=lambda x: None)
 
 
 if __name__ == "__main__":
