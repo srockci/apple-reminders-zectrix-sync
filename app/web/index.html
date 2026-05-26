@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zectrix Sync</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#4A90E2"/>
+        <path d="M7 14h14M14 7v14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>Zectrix Sync</span>
+    </div>
+    <button class="btn-icon" id="btnClose" title="最小化到后台">
+      <svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </header>
+
+  <!-- Tab bar -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="sync">同步</button>
+    <button class="tab" data-tab="devices">设备</button>
+    <button class="tab" data-tab="settings">设置</button>
+  </nav>
+
+  <!-- ── Sync Tab ── -->
+  <section class="panel" id="panelSync">
+    <div class="card">
+      <h3>同步状态</h3>
+      <div class="status-row">
+        <div class="status-dot" id="dotStatus"></div>
+        <span id="txtStatus">未连接</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>最近同步</h3>
+      <div class="info-grid">
+        <span>Apple Reminders</span><span id="txtAppleCount">—</span>
+        <span>Zectrix 待办</span><span id="txtZectrixCount">—</span>
+        <span>上次同步</span><span id="txtLastSync">—</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="btnSyncNow">立即同步</button>
+      <button class="btn btn-secondary" id="btnDryRun">预览</button>
+    </div>
+
+    <div class="card log-card">
+      <h3>同步日志</h3>
+      <div class="log-box" id="logBox"><pre id="logPre">等待同步...</pre></div>
+    </div>
+  </section>
+
+  <!-- ── Devices Tab ── -->
+  <section class="panel hidden" id="panelDevices">
+    <div class="card">
+      <h3>API 连接</h3>
+      <div class="field">
+        <label>API Key</label>
+        <div class="input-row">
+          <input type="password" id="inpApiKey" placeholder="zt_xxxxxxxxxxxxxxxx">
+          <button class="btn btn-small" id="btnTestApi">测试</button>
+        </div>
+        <div class="hint error" id="hintApiError"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>设备列表</h3>
+      <div class="device-list" id="deviceList">
+        <div class="hint">填入 API Key 后自动获取设备列表</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Settings Tab ── -->
+  <section class="panel hidden" id="panelSettings">
+    <div class="card">
+      <h3>同步设置</h3>
+      <div class="field">
+        <label>轮询间隔（秒）</label>
+        <input type="number" id="inpInterval" min="30" max="3600" value="300">
+      </div>
+      <div class="field">
+        <label>
+          <input type="checkbox" id="chkDaemon"> 开启后台轮询
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>数据目录</h3>
+      <div class="field">
+        <input type="text" id="inpDbPath" value="./sync.db" readonly>
+        <div class="hint">同步记录数据库文件</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="btnSaveSettings">保存设置</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

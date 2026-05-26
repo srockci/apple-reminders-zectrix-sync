@@ -9,61 +9,49 @@ cd apple-reminders-zectrix-sync
 pip install -r requirements.txt
 ```
 
-## Configuration
-
-Edit `config.yaml`:
-
-```yaml
-name: apple-reminders-zectrix-sync
-version: 1.0.0
-
-config:
-  - name: zectrix_api_key
-    type: string
-    required: true
-  - name: zectrix_device_id
-    type: string
-    required: true
-  - name: zectrix_base_url
-    type: string
-    default: https://cloud.zectrix.com
-  - name: poll_interval
-    type: integer
-    default: 300
-  - name: db_path
-    type: string
-    default: ./sync.db
-```
-
 ## Run
 
 ```bash
-# Single sync
+python3 app.py
+```
+
+GUI 窗口会打开，填入 API Key 后自动获取设备列表，可选择同步到哪些设备。
+
+## UI 功能
+
+- **同步页面**：查看同步状态、最近同步数量、手动触发同步或预览
+- **设备页面**：填入 API Key → 自动获取设备列表 → 勾选要同步的目标设备
+- **设置页面**：轮询间隔、后台轮询开关、数据目录
+
+## CLI 用法
+
+```bash
+# 单次同步
 python3 -m app.cli --config config.yaml
 
-# Preview (dry-run, no changes)
+# 预览（dry-run，不实际修改）
 python3 -m app.cli --config config.yaml --dry-run
 
-# Daemon mode (poll every 300s)
+# 后台轮询（每 5 分钟）
 python3 -m app.cli --config config.yaml --daemon --interval 300
 ```
 
-## Crontab (every 5 minutes)
+## 同步逻辑
+
+- Apple 有，Zectrix 没有 → 新建到 Zectrix
+- Zectrix 有，Apple 没有，之前同步过 → 删除 Zectrix（用户在 Apple 删了）
+- Zectrix 有，Apple 没有，从未同步过 → 新建到 Apple Reminders（用户在 Zectrix 侧加了）
+- 两边都有（标题相同）→ 跳过
+
+同步记录存储在 `sync.db`（SQLite）。
+
+## Crontab（每 5 分钟）
 
 ```crontab
 */5 * * * * /usr/local/bin/python3 -m app.cli --config /Users/srockci/projects/apple-reminders-zectrix-sync/config.yaml
 ```
 
-## Sync Logic
-
-- Apple 有，Zectrix 没有 → 新建到 Zectrix
-- Zectrix 有，Apple 没有，之前同步过 → 删除 Zectrix 那一端（用户在另一侧删了）
-- Zectrix 有，Apple 没有，从未同步过 → 新建到 Apple Reminders（用户在 Zectrix 侧加了）
-- 两边都有（标题相同）→ 跳过
-
-Sync records are stored in `sync.db` (SQLite) to track which items came from which side.
-
 ## Requirements
 
-- macOS (Apple Reminders access requires osascript)
+- macOS（Apple Reminders 需要 osascript）
 - Python 3.10+
