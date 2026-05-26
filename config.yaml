@@ -1,0 +1,20 @@
+name: apple-reminders-zectrix-sync
+version: 1.0.0
+description: Bidirectional sync between Apple Reminders and Zectrix todo cloud
+
+config:
+  - name: zectrix_api_key
+    type: string
+    required: true
+  - name: zectrix_device_id
+    type: string
+    required: true
+  - name: zectrix_base_url
+    type: string
+    default: https://cloud.zectrix.com
+  - name: poll_interval
+    type: integer
+    default: 300
+  - name: db_path
+    type: string
+    default: /data/sync.db
