@@ -6,9 +6,11 @@ config:
   - name: zectrix_api_key
     type: string
     required: true
+    value: ""
   - name: zectrix_device_id
     type: string
     required: true
+    value: ""
   - name: zectrix_base_url
     type: string
     default: https://cloud.zectrix.com
@@ -17,4 +19,4 @@ config:
     default: 300
   - name: db_path
     type: string
-    default: /data/sync.db
+    default: ./sync.db

@@ -46,7 +46,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        cfg = Config(config_path=args.config or "/data/config.yaml")
+        cfg = Config(config_path=args.config)
     except Exception as e:
         logger.error("Config error: %s", e)
         sys.exit(1)

@@ -1,9 +1,0 @@
-version: "3.8"
-
-services:
-  sync:
-    build: .
-    volumes:
-      - ./config.yaml:/data/config.yaml:ro
-      - ./data:/data
-    restart: unless-stopped
